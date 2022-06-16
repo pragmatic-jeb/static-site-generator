@@ -3,32 +3,42 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 
-const { API_URL, MAX_THREADS, FRAMEWORKS } = require('./config');
+const { CSS_LIBS, JS_LIBS, FRAMEWORKS, FILES_TO_COPY } = require('./config');
 
 module.exports = class extends Generator {
   prompting() {
     // Have Yeoman greet the user.
-    this.log(API_URL);
     this.log(
       yosay(
-        `Welcome to the fantabulous ${chalk.red('generator-pd-static-site')} generator!`
+        `Welcome to the \n ${chalk.red('Pragmatic Digital')}\n static site generator!`
       )
     );
 
     
     const prompts = [
       {
-        type: 'confirm',
-        name: 'includeJquery',
-        message: 'Would you like to include jQuery?',
-        default: true
+        type: 'input',
+        name: 'projectName',
+        message: 'What is the name of the project?',
       },
       {
         type: "checkbox",
         name: 'includeFrameworks',
         message: "Select which frameworks you'd like to include:",
-        choices: FRAMEWORKS,
-        store: true
+        choices: FRAMEWORKS
+      },
+      {
+        type: "checkbox",
+        name: 'includeCSSlibs',
+        message: "Select which frameworks you'd like to include:",
+        choices: CSS_LIBS
+      },
+
+      {
+        type: "checkbox",
+        name: 'includeJSlibs',
+        message: "Select which frameworks you'd like to include:",
+        choices: JS_LIBS
       }
     ];
 
@@ -39,10 +49,42 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.fs.copy(
-      this.templatePath('dummyfile.txt'),
-      this.destinationPath('dummyfile.txt')
-    );
+
+    console.log(this.props);
+    const pkgJson = {
+          dependencies: {},
+          devDependencies: {},
+    };
+
+    const packageTemplate = {
+      appname:this.props.projectName,
+      date: new Date().toISOString().split('T')[0],
+    }
+
+
+    if (this.props.includeFrameworks.includes('bootstrap')) {
+      pkgJson.dependencies = {
+        'bootstrap': '^4.4.0',
+        'popper.js': '^1.15.0',
+        'jquery': '^3.4.1',
+      };
+    }
+
+
+    for(let file of FILES_TO_COPY){
+      this.fs.copy(
+        this.templatePath(file),
+        this.destinationPath(file)
+      );
+    }
+
+    
+
+    this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
+
+
+
+
   }
 
   install() {

@@ -2,7 +2,14 @@
   "generator-pd-static-site": {
     "promptValues": {
       "includeFrameworks": [
-        "flexboxgrid"
+        "bootstrap"
+      ],
+      "includeCSSlibs": [
+        "fontawesome"
+      ],
+      "includeJSlibs": [
+        "slickjs",
+        "select2"
       ]
     }
   }
