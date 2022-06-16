@@ -1,0 +1,9 @@
+{
+  "generator-pd-static-site": {
+    "promptValues": {
+      "includeFrameworks": [
+        "flexboxgrid"
+      ]
+    }
+  }
+}
