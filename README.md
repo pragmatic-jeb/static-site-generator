@@ -1,5 +1,6 @@
-# generator-pd-static-site [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> 
+# Pragmatic Digital Static Site Builder
+This tool is used to build simple static sites using html, scss and JS.
+
 
 ## Installation
 
@@ -16,12 +17,15 @@ Then generate your new project:
 yo pd-static-site
 ```
 
-## Getting To Know Yeoman
+## Including Templates
+```
+<%= require('../components/header.html').default %>
+```
 
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
- * Feel free to [learn more about Yeoman](http://yeoman.io/).
+The following code can be added to any html template and used to pull in a component from the components directory.
+**This will not work if you try and include a component within a component as of 20th June 2022. ***
+
+
 
 ## License
 
