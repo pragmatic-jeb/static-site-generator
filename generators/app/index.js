@@ -62,9 +62,6 @@ module.exports = class extends Generator {
           }
     };
 
-    
-
-
     if (this.props.includeFrameworks.includes('bootstrap')) {
       pkgJson.dependencies = {
         'bootstrap': '^4.4.0',
@@ -81,12 +78,7 @@ module.exports = class extends Generator {
       );
     }
 
-    
-
     this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
-
-
-
 
   }
 
