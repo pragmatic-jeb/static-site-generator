@@ -40,3 +40,14 @@ Apache-2.0 © [pragmatic-jeb]()
 [daviddm-url]: https://david-dm.org/pragmatic-jeb/generator-pd-static-site
 [coveralls-image]: https://coveralls.io/repos/pragmatic-jeb/generator-pd-static-site/badge.svg
 [coveralls-url]: https://coveralls.io/r/pragmatic-jeb/generator-pd-static-site
+
+
+
+# TODO
+ - tailwinds
+ - slickjs
+ - fontawesome
+ - huskyjs to control git commits
+ - https://stackoverflow.com/a/39816574
+ - - compiling extra templates. Needs to handle this automaticly rather than adding each template one by one
+ 
