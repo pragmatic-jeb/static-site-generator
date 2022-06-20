@@ -1,0 +1,63 @@
+@mixin border-radius($radius...) {
+	border-radius: $radius;
+}
+
+@mixin transition($transition...){
+	-webkit-transition: $transition;
+	-moz-transition: $transition;
+	-ms-transition: $transition;
+	-o-transition: $transition;
+	transition: $transition;
+}
+
+//$list: $blue 0%,$blue 10%,$green 25%,$green 39%,$orange 79%,$orange 100%; 
+@mixin gradient($direction, $list) { 
+	background: -webkit-linear-gradient($direction, $list);
+	background: -moz-linear-gradient($direction, $list);
+	background: -o-linear-gradient($direction, $list);
+	background: linear-gradient($direction, $list);  
+}
+
+@mixin box-shadow($shadow...) {
+	-webkit-box-shadow: $shadow;
+	box-shadow: $shadow;
+}
+
+
+//clear fix
+@mixin clearfix() {
+	zoom: 1;
+	&:before, &:after {
+		content: '';
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+@mixin pseudo($display: block, $position: absolute, $content: ''){
+	content: $content;
+	display: $display;
+	position: $position;
+}
+
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+@mixin abs-position ($top, $right, $bottom, $left) {
+   position: absolute; 
+   top: $top;
+   right: $right;
+   bottom: $bottom;
+   left: $left;
+}

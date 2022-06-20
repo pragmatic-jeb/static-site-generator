@@ -28,9 +28,9 @@ const FRAMEWORKS = [
 
 const CSS_LIBS = [
     {
-        key: "animationcss",
-        name: "Animation.css",
-        value: "animationcss"
+        key: "animatecss",
+        name: "Animate.css",
+        value: "animatecss"
     },
     {
         key: "fontawesome",
@@ -56,11 +56,16 @@ const JS_LIBS = [
 
 const FILES_TO_COPY = [
     './webpack.config.js',
+    './webpack.helper.js',
     './src/js/index.js',
     './src/js/components/test.js',
 
+    
     './src/scss/main.scss',
     './src/scss/components/_test.scss',
+    './src/scss/core/_mixins.scss',
+    './src/scss/core/_reset.scss',
+    './src/scss/_variables.scss',
 
 
     './src/pages/index.html',

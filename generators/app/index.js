@@ -39,7 +39,13 @@ module.exports = class extends Generator {
         name: 'includeJSlibs',
         message: "Select which frameworks you'd like to include:",
         choices: JS_LIBS
-      }
+      },
+      // {
+      //   type: "confirm",
+      //   name: "exampleContent",
+      //   message: "Would you like to include sample templates and modules?"
+      // }
+
     ];
 
     return this.prompt(prompts).then(props => {
@@ -51,6 +57,8 @@ module.exports = class extends Generator {
   writing() {
 
     console.log(this.props);
+
+    //package.json object
     const pkgJson = {
           appname:this.props.projectName,
           date: new Date().toISOString().split('T')[0],
@@ -62,15 +70,74 @@ module.exports = class extends Generator {
           }
     };
 
+
+    /*
+     * 
+     * Frameworks
+     * 
+     */
+
+    //if the user includes bootstrap include dependancies
     if (this.props.includeFrameworks.includes('bootstrap')) {
       pkgJson.dependencies = {
         'bootstrap': '^4.4.0',
         'popper.js': '^1.15.0',
         'jquery': '^3.4.1',
       };
+      //include relevant stuff
     }
 
 
+    if (this.props.includeFrameworks.includes('tailwind')) {
+      // include tailwind config in dependancies
+      pkgJson.devDependencies["tailwindcss"] = "^3.1.3";
+      //move file to directory
+      this.fs.copy(
+        this.templatePath('./tailwind.config.js'),
+        this.destinationPath('./tailwind.config.js')
+      );
+    }
+
+    if(this.props.includeFrameworks.includes('flexboxgrid')){
+      pkgJson.dependencies = {
+        "flexboxgrid": "^6.3.1"
+      };
+    }
+
+    /*
+     * 
+     * CSS Libs 
+     * 
+     */
+
+    //if animatecss is in include libs include the dependancies
+    if(this.props.includeCSSlibs.includes('animatecss')){
+      pkgJson.dependencies["animate.css"] = "^4.1.1";
+    }
+
+    //if fontawesome is in include libs include the dependancies
+    if(this.props.includeCSSlibs.includes('fontawesome')){
+      pkgJson.dependencies["@fortawesome/fontawesome-free"] = "^6.1.1";
+    }
+
+
+    /*
+     * 
+     * JS Libs 
+     * 
+     */
+
+    //if select2 is in include libs include the dependancies
+    if(this.props.includeJSlibs.includes('select2')){
+      pkgJson.dependencies["@fortawesome/fontawesome-free"] = "^6.1.1";
+    }
+
+    //if slickjs is in include libs include the dependancies
+    if(this.props.includeJSlibs.includes('slickjs')){
+      pkgJson.dependencies["slick-carousel"] = "^1.8.1";
+    }
+
+    //include core files that are required everytime
     for(let file of FILES_TO_COPY){
       this.fs.copy(
         this.templatePath(file),
@@ -78,6 +145,7 @@ module.exports = class extends Generator {
       );
     }
 
+    //write final json object to package.json
     this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
 
   }
