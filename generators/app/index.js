@@ -3,7 +3,7 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 
-const { CSS_LIBS, JS_LIBS, FRAMEWORKS, FILES_TO_COPY } = require('./config');
+const { CSS_LIBS, JS_LIBS, FRAMEWORKS, FILES_TO_COPY, ENVDEPENDANCIES } = require('./config');
 
 module.exports = class extends Generator {
   prompting() {
@@ -52,14 +52,17 @@ module.exports = class extends Generator {
 
     console.log(this.props);
     const pkgJson = {
+          appname:this.props.projectName,
+          date: new Date().toISOString().split('T')[0],
           dependencies: {},
-          devDependencies: {},
+          devDependencies: ENVDEPENDANCIES,
+          scripts: {
+            "serve": "webpack-dev-server --progress  --mode development",
+            "build": "webpack --progress  --mode production"
+          }
     };
 
-    const packageTemplate = {
-      appname:this.props.projectName,
-      date: new Date().toISOString().split('T')[0],
-    }
+    
 
 
     if (this.props.includeFrameworks.includes('bootstrap')) {
