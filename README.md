@@ -44,11 +44,16 @@ Apache-2.0 © [pragmatic-jeb]()
 
 
 # TODO
- - tailwind
- - - https://tailwindcss.com/docs/adding-custom-styles
-
- 
- - slickjs
- - fontawesome
+ - Look into a method of creating seperate stylesheets if more than one root SCSS file exists
+ - actually include install libs in JS/SCSS
  - huskyjs to control git commits
+ - - The plan will be to run tests on commit
+ - - - Test Ideas:
+ - - - - validate HTML
+ - - - - validate JS
+ - - - - validate SCSS
+ - - - - check to make sure the build directory exists. If not prompt to run `npm run build`
+
+
+
 
