@@ -64,6 +64,8 @@ const FILES_TO_COPY = [
 
 
     './src/pages/index.html',
+    './src/pages/test.html',
+    './src/pages/test/index.html',
 
     './src/components/header.html',
     './src/components/footer.html',
