@@ -44,6 +44,12 @@ Apache-2.0 © [pragmatic-jeb]()
 
 
 # TODO
+ - add question to check if the developer wants "bleeding edge/latest packages" or "stable"
+ - - Kinda risky but could run `npm run update`
+ - add method of prefixing scss file with something like `main--` to tell the builder to compile a seperate stylesheet
+ - - otherwise any other scss files will be ignored
+ - build html sitemap in root of directory for browsing pages easily
+ - - grab page titles from files to use as links  
  - Look into a method of creating seperate stylesheets if more than one root SCSS file exists
  - actually include install libs in JS/SCSS
  - huskyjs to control git commits

@@ -77,6 +77,7 @@ module.exports = class extends Generator {
      * 
      */
 
+    let cssImports = ``;
     //if the user includes bootstrap include dependancies
     if (this.props.includeFrameworks.includes('bootstrap')) {
       pkgJson.dependencies = {
@@ -85,6 +86,7 @@ module.exports = class extends Generator {
         'jquery': '^3.4.1',
       };
       //include relevant stuff
+      cssImports += `\n@import 'bootstrap';`;
     }
 
 
@@ -96,12 +98,16 @@ module.exports = class extends Generator {
         this.templatePath('./tailwind.config.js'),
         this.destinationPath('./tailwind.config.js')
       );
+
+      //cssImports += `\n@import 'bootstrap';`;
     }
 
     if(this.props.includeFrameworks.includes('flexboxgrid')){
       pkgJson.dependencies = {
         "flexboxgrid": "^6.3.1"
       };
+
+      cssImports += `\n@import 'flexboxgrid';`;
     }
 
     /*
@@ -113,11 +119,15 @@ module.exports = class extends Generator {
     //if animatecss is in include libs include the dependancies
     if(this.props.includeCSSlibs.includes('animatecss')){
       pkgJson.dependencies["animate.css"] = "^4.1.1";
+      cssImports += `\n@import 'animate.css';`;
+
     }
 
     //if fontawesome is in include libs include the dependancies
     if(this.props.includeCSSlibs.includes('fontawesome')){
       pkgJson.dependencies["@fortawesome/fontawesome-free"] = "^6.1.1";
+      cssImports += `\n@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';`;
+
     }
 
 
@@ -129,13 +139,17 @@ module.exports = class extends Generator {
 
     //if select2 is in include libs include the dependancies
     if(this.props.includeJSlibs.includes('select2')){
-      pkgJson.dependencies["@fortawesome/fontawesome-free"] = "^6.1.1";
+      pkgJson.dependencies["select2"] = "^4.1.0-rc.0";
+      cssImports += `\n@import 'select2';`;
     }
 
     //if slickjs is in include libs include the dependancies
     if(this.props.includeJSlibs.includes('slickjs')){
       pkgJson.dependencies["slick-carousel"] = "^1.8.1";
+      cssImports += `\n@import 'slick-carousel/slick/slick';`;
     }
+
+    
 
     //include core files that are required everytime
     for(let file of FILES_TO_COPY){
@@ -144,6 +158,10 @@ module.exports = class extends Generator {
         this.destinationPath(file)
       );
     }
+
+
+    //write scss imports to file
+    this.fs.append('./src/scss/main.scss', cssImports);
 
     //write final json object to package.json
     this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);

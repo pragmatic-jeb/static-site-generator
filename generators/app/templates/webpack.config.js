@@ -2,8 +2,7 @@ const path = require("path");
 const minJSON = require("jsonminify");
 const webpack = require("webpack");
 const fs = require('fs');
-const webpackHelper = require('webpack.helper');
-console.log(webpackHelper);
+
 
 const glob = require("glob");
 const directory = './src/pages';
