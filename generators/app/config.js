@@ -70,6 +70,7 @@ const FILES_TO_COPY = [
 ];
 
 const ENVDEPENDANCIES = {
+    "glob": "^8.0.3",
     "webpack":"^5.73.0",
     "webpack-cli":"^4.10.0",
     "sass-loader":"^13.0.0",

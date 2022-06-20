@@ -1,6 +1,10 @@
 const path = require("path");
 const minJSON = require("jsonminify");
 const webpack = require("webpack");
+const fs = require('fs');
+
+const glob = require("glob");
+const directory = './src/pages';
 
 const { SubresourceIntegrityPlugin } = require("webpack-subresource-integrity");
 
@@ -176,27 +180,45 @@ module.exports = (env = {}, argv) => {
     },
 
     plugins: (() => {
-      let common = [
-        new plugins.extractCSS({
-          filename: "assets/css/[name].css",
-        }),
-        new plugins.html({
-          template: "pages/index.html",
-          filename: "index.html",
-          minify: {
-            removeScriptTypeAttributes: false,
-            removeStyleLinkTypeAttributes: false,
-          },
-        }),
-        new plugins.progress({
-          color: "#5C95EE",
-        }),
-        new webpack.DefinePlugin({
-          "process.env.NODE_ENV": JSON.stringify(
-            isProduction ? "production" : "development"
-          ),
-        }),
+      let common = [new plugins.extractCSS({
+        filename: "assets/css/[name].css",
+      }),
+      new plugins.progress({
+        color: "#5C95EE",
+      }),
       ];
+
+      let res = glob.sync(directory + '/**/*.html');
+      for(const file of res){
+        if (!fs.statSync(file).isDirectory()) {
+          
+          let filename = path.basename(file);
+
+          let chunkName = filename.replace('.', '');
+
+          let filePath = file.replace('/src', '');
+          common.push(new plugins.html({
+              template: filePath,
+              filename: filePath,
+              chunks:[chunkName],
+              minify: {
+                removeScriptTypeAttributes: false,
+                removeStyleLinkTypeAttributes: false,
+              },
+            }))
+        }
+      }
+
+      
+
+
+      common.push( 
+      new webpack.DefinePlugin({
+        "process.env.NODE_ENV": JSON.stringify(
+          isProduction ? "production" : "development"
+        ),
+      }));
+
 
       const production = [
         new plugins.clean(),

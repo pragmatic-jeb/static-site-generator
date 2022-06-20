@@ -44,10 +44,10 @@ Apache-2.0 © [pragmatic-jeb]()
 
 
 # TODO
- - tailwinds
+ - tailwind
+ - - https://tailwindcss.com/docs/adding-custom-styles
  - slickjs
  - fontawesome
  - huskyjs to control git commits
  - https://stackoverflow.com/a/39816574
  - - compiling extra templates. Needs to handle this automaticly rather than adding each template one by one
- 
