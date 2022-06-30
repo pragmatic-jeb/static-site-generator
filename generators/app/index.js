@@ -1,51 +1,57 @@
-'use strict';
-const Generator = require('yeoman-generator');
-const chalk = require('chalk');
-const yosay = require('yosay');
+"use strict";
+const Generator = require("yeoman-generator");
+const chalk = require("chalk");
+const yosay = require("yosay");
 
-const { CSS_LIBS, JS_LIBS, FRAMEWORKS, FILES_TO_COPY, ENVDEPENDANCIES } = require('./config');
+const {
+  CSS_LIBS,
+  JS_LIBS,
+  FRAMEWORKS,
+  FILES_TO_COPY,
+  ENVDEPENDANCIES
+} = require("./config");
 
 module.exports = class extends Generator {
   prompting() {
     // Have Yeoman greet the user.
     this.log(
       yosay(
-        `Welcome to the \n ${chalk.red('Pragmatic Digital')}\n static site generator!`
+        `Welcome to the \n ${chalk.red(
+          "Pragmatic Digital"
+        )}\n static site generator!`
       )
     );
 
-    
     const prompts = [
       {
-        type: 'input',
-        name: 'projectName',
-        message: 'What is the name of the project?',
+        type: "input",
+        name: "projectName",
+        message: "What is the name of the project?"
       },
       {
         type: "checkbox",
-        name: 'includeFrameworks',
+        name: "includeFrameworks",
         message: "Select which frameworks you'd like to include:",
         choices: FRAMEWORKS
       },
       {
         type: "checkbox",
-        name: 'includeCSSlibs',
+        name: "includeCSSlibs",
         message: "Select which frameworks you'd like to include:",
         choices: CSS_LIBS
       },
 
       {
         type: "checkbox",
-        name: 'includeJSlibs',
+        name: "includeJSlibs",
         message: "Select which frameworks you'd like to include:",
         choices: JS_LIBS
-      },
+      }
       // {
       //   type: "confirm",
       //   name: "exampleContent",
       //   message: "Would you like to include sample templates and modules?"
       // }
-
     ];
 
     return this.prompt(prompts).then(props => {
@@ -55,117 +61,105 @@ module.exports = class extends Generator {
   }
 
   writing() {
-
     console.log(this.props);
 
-    //package.json object
+    // Package.json object
     const pkgJson = {
-          appname:this.props.projectName,
-          date: new Date().toISOString().split('T')[0],
-          dependencies: {},
-          devDependencies: ENVDEPENDANCIES,
-          scripts: {
-            "serve": "webpack-dev-server --progress  --mode development",
-            "build": "webpack --progress  --mode production"
-          }
+      appname: this.props.projectName,
+      date: new Date().toISOString().split("T")[0],
+      dependencies: {},
+      devDependencies: ENVDEPENDANCIES,
+      scripts: {
+        serve: "webpack-dev-server --progress  --mode development",
+        build: "webpack --progress  --mode production",
+        prepare: "husky install" // This will install husky and auto allow git hooks when npm install is ran
+      }
     };
 
-
     /*
-     * 
+     *
      * Frameworks
-     * 
+     *
      */
 
     let cssImports = ``;
-    //if the user includes bootstrap include dependancies
-    if (this.props.includeFrameworks.includes('bootstrap')) {
+    // If the user includes bootstrap include dependancies
+    if (this.props.includeFrameworks.includes("bootstrap")) {
       pkgJson.dependencies = {
-        'bootstrap': '^4.4.0',
-        'popper.js': '^1.15.0',
-        'jquery': '^3.4.1',
+        bootstrap: "^4.4.0",
+        "popper.js": "^1.15.0",
+        jquery: "^3.4.1"
       };
-      //include relevant stuff
+      // Include relevant stuff
       cssImports += `\n@import 'bootstrap';`;
     }
 
-
-    if (this.props.includeFrameworks.includes('tailwind')) {
-      // include tailwind config in dependancies
-      pkgJson.devDependencies["tailwindcss"] = "^3.1.3";
-      //move file to directory
+    if (this.props.includeFrameworks.includes("tailwind")) {
+      // Include tailwind config in dependancies
+      pkgJson.devDependencies.tailwindcss = "^3.1.3";
+      // Move file to directory
       this.fs.copy(
-        this.templatePath('./tailwind.config.js'),
-        this.destinationPath('./tailwind.config.js')
+        this.templatePath("./tailwind.config.js"),
+        this.destinationPath("./tailwind.config.js")
       );
 
-      //cssImports += `\n@import 'bootstrap';`;
+      // CssImports += `\n@import 'bootstrap';`;
     }
 
-    if(this.props.includeFrameworks.includes('flexboxgrid')){
+    if (this.props.includeFrameworks.includes("flexboxgrid")) {
       pkgJson.dependencies = {
-        "flexboxgrid": "^6.3.1"
+        flexboxgrid: "^6.3.1"
       };
 
       cssImports += `\n@import 'flexboxgrid';`;
     }
 
     /*
-     * 
-     * CSS Libs 
-     * 
+     *
+     * CSS Libs
+     *
      */
 
-    //if animatecss is in include libs include the dependancies
-    if(this.props.includeCSSlibs.includes('animatecss')){
+    // if animatecss is in include libs include the dependancies
+    if (this.props.includeCSSlibs.includes("animatecss")) {
       pkgJson.dependencies["animate.css"] = "^4.1.1";
       cssImports += `\n@import 'animate.css';`;
-
     }
 
-    //if fontawesome is in include libs include the dependancies
-    if(this.props.includeCSSlibs.includes('fontawesome')){
+    // If fontawesome is in include libs include the dependancies
+    if (this.props.includeCSSlibs.includes("fontawesome")) {
       pkgJson.dependencies["@fortawesome/fontawesome-free"] = "^6.1.1";
       cssImports += `\n@import '@fortawesome/fontawesome-free/scss/fontawesome.scss';`;
-
     }
 
-
     /*
-     * 
-     * JS Libs 
-     * 
+     *
+     * JS Libs
+     *
      */
 
-    //if select2 is in include libs include the dependancies
-    if(this.props.includeJSlibs.includes('select2')){
-      pkgJson.dependencies["select2"] = "^4.1.0-rc.0";
+    // if select2 is in include libs include the dependancies
+    if (this.props.includeJSlibs.includes("select2")) {
+      pkgJson.dependencies.select2 = "^4.1.0-rc.0";
       cssImports += `\n@import 'select2';`;
     }
 
-    //if slickjs is in include libs include the dependancies
-    if(this.props.includeJSlibs.includes('slickjs')){
+    // If slickjs is in include libs include the dependancies
+    if (this.props.includeJSlibs.includes("slickjs")) {
       pkgJson.dependencies["slick-carousel"] = "^1.8.1";
       cssImports += `\n@import 'slick-carousel/slick/slick';`;
     }
 
-    
-
-    //include core files that are required everytime
-    for(let file of FILES_TO_COPY){
-      this.fs.copy(
-        this.templatePath(file),
-        this.destinationPath(file)
-      );
+    // Include core files that are required everytime
+    for (let file of FILES_TO_COPY) {
+      this.fs.copy(this.templatePath(file), this.destinationPath(file));
     }
 
+    // Write scss imports to file
+    this.fs.append("./src/scss/main.scss", cssImports);
 
-    //write scss imports to file
-    this.fs.append('./src/scss/main.scss', cssImports);
-
-    //write final json object to package.json
-    this.fs.extendJSON(this.destinationPath('package.json'), pkgJson);
-
+    // Write final json object to package.json
+    this.fs.extendJSON(this.destinationPath("package.json"), pkgJson);
   }
 
   install() {
