@@ -2,6 +2,7 @@ const path = require("path");
 const minJSON = require("jsonminify");
 const webpack = require("webpack");
 const fs = require('fs');
+const package = require('./package.json');
 
 
 const glob = require("glob");
@@ -192,6 +193,7 @@ module.exports = (env = {}, argv) => {
       let res = glob.sync(directory + '/**/*.html');
 
       let html = '<ul>';
+      let c = 0;
       for(const file of res){
         if (!fs.statSync(file).isDirectory()) {
           
@@ -211,16 +213,17 @@ module.exports = (env = {}, argv) => {
             }))
 
             html += "<li><a href="+filePath+">"+filename+"</li>\n";
+            c++;
         }
       }
 
 
       //add landing page html file
       html += '</ul>';
-
+      console.log(package);
       common.push(new plugins.html({
-        title: 'Landing page',
-        myPageHeader: 'List of pages avalible within the build',
+        title: package.appname+' - Landing page',
+        myPageHeader: package.appname+' project has ' +c+' pages',
         listHTML:html,
         template: './index.html',
         filename: './index.html',
