@@ -55,9 +55,11 @@ const JS_LIBS = [
 
 
 const FILES_TO_COPY = [
+    './readme.md',
     './webpack.config.js',
     './webpack.helper.js',
     './src/js/index.js',
+    './src/index.html',
     './src/js/components/test.js',
 
     

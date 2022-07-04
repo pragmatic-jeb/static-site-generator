@@ -190,6 +190,8 @@ module.exports = (env = {}, argv) => {
       ];
 
       let res = glob.sync(directory + '/**/*.html');
+
+      let html = '<ul>';
       for(const file of res){
         if (!fs.statSync(file).isDirectory()) {
           
@@ -207,8 +209,27 @@ module.exports = (env = {}, argv) => {
                 removeStyleLinkTypeAttributes: false,
               },
             }))
+
+            html += "<li><a href="+filePath+">"+filename+"</li>\n";
         }
       }
+
+
+      //add landing page html file
+      html += '</ul>';
+
+      common.push(new plugins.html({
+        title: 'Landing page',
+        myPageHeader: 'List of pages avalible within the build',
+        listHTML:html,
+        template: './index.html',
+        filename: './index.html',
+        chunks:['landingIndex'],
+        minify: {
+          removeScriptTypeAttributes: false,
+          removeStyleLinkTypeAttributes: false,
+        },
+      }))
 
       
 
